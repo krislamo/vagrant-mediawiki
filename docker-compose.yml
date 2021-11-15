@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  mediawiki:
+      build: .
+      restart: always
+      ports:
+        - 8080:80
+      links:
+        - database
+      volumes:
+        - /var/www/html/images
+        #- ./LocalSettings.php:/var/www/html/LocalSettings.php
+        - ./ldapprovider.json:/etc/mediawiki/ldapprovider.json
+  database:
+      image: mariadb
+      restart: always
+      environment:
+        MYSQL_DATABASE: mediawiki
+        MYSQL_USER: mediawiki
+        MYSQL_PASSWORD: password123
+        MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+
