@@ -44,3 +44,33 @@ usermod -aG docker vagrant
 file="docker-compose-$(uname -s)-$(uname -m)"
 curl -sL "$url/download/$compose_version/$file" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
+
+# Start containers
+cd /vagrant
+docker-compose up -d --quiet-pull
+
+# Install MediaWiki
+sleep 5
+docker exec vagrant-mediawiki-1 \
+  php maintenance/install.php \
+    --dbname=mediawiki \
+    --dbserver=database \
+    --installdbuser=mediawiki \
+    --installdbpass=password123 \
+    --dbuser=mediawiki \
+    --dbpass=password123 \
+    --server="http://localhost:8080" \
+    --scriptpath="" \
+    --lang=en \
+    --pass=adminpassword123 \
+    "Testing Wiki" "admin"
+
+# Copy LocalSettings.php out of the container
+docker exec vagrant-mediawiki-1 \
+  cat /var/www/html/LocalSettings.php > /tmp/LocalSettings.php
+cat /tmp/LocalSettings.php /vagrant/settings.php > /vagrant/LocalSettings.php
+sed -i 's/#- .\/LocalSettings.php/- .\/LocalSettings.php/' /vagrant/docker-compose.yml
+docker-compose up -d
+
+# Update database
+docker exec -it vagrant-mediawiki-1 php maintenance/update.php
