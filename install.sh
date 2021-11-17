@@ -47,6 +47,8 @@ chmod +x /usr/local/bin/docker-compose
 
 # Start containers
 cd /vagrant
+git reset HEAD docker-compose.yml
+git checkout -- docker-compose.yml
 docker-compose up -d --quiet-pull
 
 # Install MediaWiki
@@ -73,4 +75,4 @@ sed -i 's/#- .\/LocalSettings.php/- .\/LocalSettings.php/' /vagrant/docker-compo
 docker-compose up -d
 
 # Update database
-docker exec -it vagrant-mediawiki-1 php maintenance/update.php
+docker exec vagrant-mediawiki-1 php maintenance/update.php
