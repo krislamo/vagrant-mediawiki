@@ -1,3 +1,6 @@
+# Logo
+$wgLogos = [ '1x' => "/logo.svg" ];
+
 # Private Wiki
 $wgGroupPermissions['*']['read'] = false;
 $wgGroupPermissions['*']['edit'] = false;

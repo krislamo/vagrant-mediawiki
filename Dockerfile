@@ -4,6 +4,8 @@ ARG VER=REL1_35
 ARG EXT="PluggableAuth LDAPProvider LDAPAuthentication2"
 ARG URL="https://extdist.wmflabs.org/dist/extensions/"
 
+COPY logo.svg /var/www/html/
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
         libldap2-dev \
         libldap-2.4-2 \
