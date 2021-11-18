@@ -30,3 +30,8 @@ wfLoadExtension( 'Parsoid', "vendor/wikimedia/parsoid/extension.json" );
 $wgVirtualRestConfig['modules']['parsoid'] = [
   'url' => 'http://localhost' . $wgScriptPath . '/rest.php',
 ];
+
+# Mobile Responsive
+wfLoadExtension( 'MobileFrontend' );
+wfLoadSkin( 'Vector' );
+$wgMFDefaultSkinClass = 'SkinVector';
