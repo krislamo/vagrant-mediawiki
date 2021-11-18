@@ -19,6 +19,7 @@ wfLoadExtension( 'LDAPAuthentication2' );
 $wgGroupPermissions['*']['createaccount'] = false;
 $wgGroupPermissions['*']['autocreateaccount'] = true;
 $wgPasswordResetRoutes = false;
+#$LDAPAuthentication2AllowLocalLogin = true;
 
 # Visual Editor
 wfLoadExtension( 'VisualEditor' );

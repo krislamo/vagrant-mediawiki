@@ -2,53 +2,31 @@
 
 MediaWiki container demonstration and development.
 
+### Notes about LDAP
+
+- This demonstration includes LDAP integration, which is optional and dependent on the existence of the  `./ldapprovider.json` file. Since this configuration is infrastructure-dependent, it can not be included.
+    - [LDAPProvider Documentation](https://www.mediawiki.org/wiki/Extension:LDAPProvider#Domain_config_providers)
+- This guide additionally assumes you have solved routing into your LDAP server from a guest environment, presumably by using [sshuttle](https://sshuttle.readthedocs.io/en/stable/) on the host to forward connections to particular IP addresses through an SSH tunnel.
+
+    i.e.
+    ```
+    sshuttle -v -r me@example.com:22 -x example.com:22 X.X.X.X/XX
+    ```
+
 ### Quick Start
-1. Start Vagrant and login to root
+1. Start Vagrant
+    ```
+    vagrant up
+    ```
 
-   ```
-   $ vagrant up
-   $ vagrant ssh
-   vagrant@bullseye:~$ sudo -i
-   root@bullseye:~#
-   ```
+2. Navigate to [http://localhost:8080/](http://localhost:8080/) and login
+    - If the `./ldapprovider.json` file wasn't included, the login credentials are:
+        - user: `Admin`
+        - pass: `adminpassword123`
+    - If the file was included, **all** logins will authenticate against LDAP
+        - Set `$LDAPAuthentication2AllowLocalLogin` to `true` in `./LocalSettings.php` to allow local authentication
+        - [LDAPAutentication2 Documentation](https://www.mediawiki.org/wiki/Extension:LDAPAuthentication2#Extension_settings)
 
-2. Run the docker-compose file
-
-   ```
-   root@bullseye:~# cd /vagrant
-   root@bullseye:/vagrant# docker-compose up -d
-   ```
-
-3. Navigate to [http://localhost:8080/](http://localhost:8080/) to set up LocalSettings.php
-
-   Database host: `database` <br>
-   Database name: `mediawiki` <br>
-   Database user: `mediawiki` <br>
-   Database pass: `password123`
-
-4. Download LocalSettings.php to the root of the vagrant project
-
-5. Uncomment the LocalSettings bind mount in the compose file:
-
-   ```
-   sed -i 's/#- .\/LocalSettings.php/- .\/LocalSettings.php/' docker-compose.yml
-   docker-compose up -d
-   ```
-
-6. Manually add the following to the bottom of the LocalSettings.php file:
-
-   ```
-   wfLoadExtension( 'PluggableAuth' );
-   wfLoadExtension( 'LDAPProvider' );
-   wfLoadExtension( 'LDAPAuthentication2' );
-   wfLoadExtension( 'VisualEditor' );
-   ```
-
-7. Run the update PHP script
-
-   ```
-   docker exec -it vagrant-mediawiki-1 php maintenance/update.php
-   ```
 
 #### Copyrights and Licenses
 Copyright 2021  Kris Lamoureux
