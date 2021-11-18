@@ -33,3 +33,8 @@ $wgVirtualRestConfig['modules']['parsoid'] = [
 
 # Google Docs embeds
 wfLoadExtension( 'GoogleDocTag' );
+
+# MobileFrontend
+wfLoadExtension( 'MobileFrontend' );
+wfLoadSkin( 'Vector' );
+$wgMFDefaultSkinClass = 'SkinVector';

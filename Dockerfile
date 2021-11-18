@@ -1,7 +1,7 @@
 FROM mediawiki:1.35.4
 
 ARG VER=REL1_35
-ARG EXT="PluggableAuth LDAPProvider LDAPAuthentication2 GoogleDocTag"
+ARG EXT="PluggableAuth LDAPProvider LDAPAuthentication2 GoogleDocTag MobileFrontend"
 ARG URL="https://extdist.wmflabs.org/dist/extensions/"
 
 COPY logo.svg /var/www/html/
