@@ -30,3 +30,6 @@ wfLoadExtension( 'Parsoid', "vendor/wikimedia/parsoid/extension.json" );
 $wgVirtualRestConfig['modules']['parsoid'] = [
   'url' => 'http://localhost' . $wgScriptPath . '/rest.php',
 ];
+
+# Google Docs embeds
+wfLoadExtension( 'GoogleDocTag' );
