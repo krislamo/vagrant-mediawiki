@@ -52,7 +52,8 @@ git checkout -- docker-compose.yml
 docker-compose up -d --quiet-pull
 
 # Install MediaWiki
-sleep 5
+echo "Waiting 20 seconds for containers to come online..."
+sleep 20
 docker exec vagrant-mediawiki-1 \
   php maintenance/install.php \
     --dbname=mediawiki \
@@ -72,6 +73,18 @@ docker exec vagrant-mediawiki-1 \
   cat /var/www/html/LocalSettings.php > /tmp/LocalSettings.php
 cat /tmp/LocalSettings.php /vagrant/settings.php > /vagrant/LocalSettings.php
 sed -i 's/#- .\/LocalSettings.php/- .\/LocalSettings.php/' /vagrant/docker-compose.yml
+
+# Disable LDAP if configuration is missing
+if [ ! -f ldapprovider.json ]; then
+  echo "WARNING: No LDAP Provider file. Removing LDAP configuration."
+  [ -d ldapprovider.json ] && rm -rf ./ldapprovider.json/
+  sed -i 's/ - .\/ldapprovider.json/#- .\/ldapprovider.json/' /vagrant/docker-compose.yml
+  sed -i '/PluggableAuth/d' /vagrant/LocalSettings.php
+  sed -i '/LDAPProvider/d' /vagrant/LocalSettings.php
+  sed -i '/LDAPAuthentication2/d' /vagrant/LocalSettings.php
+fi
+
+# Bring it up
 docker-compose up -d
 
 # Update database
