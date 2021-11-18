@@ -1,6 +1,9 @@
 # Logo
 $wgLogos = [ '1x' => "/logo.svg" ];
 
+# Short URLs
+$wgArticlePath = "/wiki/$1";
+
 # Private Wiki
 $wgGroupPermissions['*']['read'] = false;
 $wgGroupPermissions['*']['edit'] = false;
