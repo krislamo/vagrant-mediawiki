@@ -35,3 +35,6 @@ $wgVirtualRestConfig['modules']['parsoid'] = [
 wfLoadExtension( 'MobileFrontend' );
 wfLoadSkin( 'Vector' );
 $wgMFDefaultSkinClass = 'SkinVector';
+
+# Syntax Highlighting
+wfLoadExtension( 'SyntaxHighlight_GeSHi' );
